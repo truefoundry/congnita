@@ -1,5 +1,5 @@
 #### singlestore db
 singlestoredb==1.0.4
 
-### Weaviate client (in progress)
-weaviate-client==3.25.3
+### Weaviate client
+weaviate-client==4.7.1

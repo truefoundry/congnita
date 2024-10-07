@@ -3,6 +3,7 @@ langchain==0.1.9
 langchain-community==0.0.24
 langchain-openai==0.1.7
 langchain-core==0.1.46
+langchain-weaviate==0.0.3
 openai==1.35.3
 tiktoken==0.7.0
 uvicorn[standard]==0.23.2
