@@ -39,3 +39,4 @@ class DataSourceType(StrEnum):
     TRUEFOUNDRY = "truefoundry"
     LOCAL = "localdir"
     WEB = "web"
+    STRUCTURED = "structured"

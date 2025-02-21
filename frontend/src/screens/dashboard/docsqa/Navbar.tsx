@@ -8,6 +8,7 @@ import {
   faRocket,
   faGear,
   faPlay,
+  faTable,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Drawer } from '@mui/material'
@@ -30,6 +31,11 @@ function getMenuOptions(): {
       label: 'DocsQA',
       route: '/',
       icon: faPlay,
+    },
+    {
+      label: 'StructuredQA',
+      route: '/structured',
+      icon: faTable,
     },
     {
       label: 'Collections',
@@ -66,7 +72,7 @@ export default function NavBar({ children }: any) {
         {({ isActive }) => (
           <>
             <FontAwesomeIcon
-              icon={menuOption.icon}
+              icon={menuOption.icon as IconProp}
               className={`text-[12px] ${
                 isActive ? 'text-[#2300F7]' : 'text-[#82a0ce]'
               }`}

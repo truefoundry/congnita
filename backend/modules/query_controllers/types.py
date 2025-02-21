@@ -16,6 +16,7 @@ class Document(ConfiguredBaseModel):
 class Answer(ConfiguredBaseModel):
     type: str = "answer"
     content: str
+    image_base64: Optional[str] = None
 
 
 class Docs(ConfiguredBaseModel):

@@ -25,15 +25,19 @@ export interface ModelConfig {
 }
 
 export interface CollectionQueryDto {
-  collection_name: string
+  collection_name?: string
+  data_source_fqn?: string
+  table?: string
+  where?: []
   retriever_name?: string
-  retriever_config: {
+  retriever_config?: {
     search_type: string
     search_kwargs?: any
     k?: number
     fetch_k?: number
   }
   prompt_template?: string
+  description?: string
   query: string
   model_configuration: ModelConfig
   stream?: boolean
@@ -57,7 +61,7 @@ interface ParserConfig {
 export interface AssociatedDataSource {
   data_source_fqn: string
   parser_config: {
-      [key: string]: ParserConfig
+    [key: string]: ParserConfig
   }
   data_source: DataSource
 }
@@ -259,13 +263,27 @@ export const qafoundryApi = createApi({
         method: 'POST',
       }),
     }),
-    uploadDataToLocalDirectory: builder.mutation({
-      query: (payload: { files: File[]; upload_name: string }) => {
+    uploadDataToLocalDirectory: builder.mutation<
+      { data_source: { fqn: string } },
+      {
+        files: File[]
+        upload_name: string
+        is_structured?: boolean
+      }
+    >({
+      query: (payload: {
+        files: File[]
+        upload_name: string
+        is_structured?: boolean
+      }) => {
         var bodyFormData = new FormData()
         bodyFormData.append('upload_name', payload.upload_name)
         payload.files.forEach((file) => {
           bodyFormData.append('files', file)
         })
+        if (payload.is_structured) {
+          bodyFormData.append('is_structured', 'true')
+        }
         return {
           url: '/v1/internal/upload-to-local-directory',
           body: bodyFormData,

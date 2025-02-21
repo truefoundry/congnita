@@ -63,11 +63,11 @@ const NewCollection = ({ open, onClose, onSuccess }: NewCollectionProps) => {
         return notify(
           'error',
           'Collection Name is Required!',
-          'Please provide a collection name',
+          'Please provide a collection name'
         )
       }
       const embeddingModel = allEmbeddingModels.find(
-        (model: any) => model.name == selectedEmbeddingModel,
+        (model: any) => model.name == selectedEmbeddingModel
       )
 
       const params = {
@@ -95,14 +95,14 @@ const NewCollection = ({ open, onClose, onSuccess }: NewCollectionProps) => {
       })
 
       const allCollectionToJobNames = JSON.parse(
-        localStorage.getItem('collectionToJob') || '{}',
+        localStorage.getItem('collectionToJob') || '{}'
       )
       localStorage.setItem(
         'collectionToJob',
         JSON.stringify({
           ...allCollectionToJobNames,
           [collectionName]: res,
-        }),
+        })
       )
 
       onClose(collectionName)
@@ -111,7 +111,7 @@ const NewCollection = ({ open, onClose, onSuccess }: NewCollectionProps) => {
       notify(
         'success',
         'Collection is successfully added!',
-        'Collection will be available to use after 3-5 minutes.',
+        'Collection will be available to use after 3-5 minutes.'
       )
     } catch (err: any) {
       notifyError('Failed to create the colllection', err)
@@ -157,7 +157,7 @@ const NewCollection = ({ open, onClose, onSuccess }: NewCollectionProps) => {
             <input
               className={classNames(
                 'block w-full border border-gray-250 outline-none text-md p-2 rounded',
-                { 'field-error': collectionName && !isValidCollectionName },
+                { 'field-error': collectionName && !isValidCollectionName }
               )}
               id="collection-name-input"
               placeholder="Enter your collection name"
@@ -239,11 +239,14 @@ const NewCollection = ({ open, onClose, onSuccess }: NewCollectionProps) => {
                 <MenuItem value={'none'} disabled>
                   Select a Data Source FQN
                 </MenuItem>
-                {dataSources?.map((source: any) => (
-                  <MenuItem value={source.fqn} key={source.fqn}>
-                    <span className="truncate w-full">{source.fqn}</span>
-                  </MenuItem>
-                ))}
+                {dataSources?.map(
+                  (source: any) =>
+                    !source.fqn.startsWith('structured') && (
+                      <MenuItem value={source.fqn} key={source.fqn}>
+                        <span className="truncate w-full">{source.fqn}</span>
+                      </MenuItem>
+                    )
+                )}
               </Select>
             </label>
           </div>
@@ -255,7 +258,7 @@ const NewCollection = ({ open, onClose, onSuccess }: NewCollectionProps) => {
                 <div>
                   {
                     dataSources?.filter(
-                      (source) => source.fqn === selectedDataSource,
+                      (source) => source.fqn === selectedDataSource
                     )[0].type
                   }
                 </div>
@@ -266,7 +269,7 @@ const NewCollection = ({ open, onClose, onSuccess }: NewCollectionProps) => {
                 <div>
                   {
                     dataSources?.filter(
-                      (source) => source.fqn === selectedDataSource,
+                      (source) => source.fqn === selectedDataSource
                     )[0].uri
                   }
                 </div>

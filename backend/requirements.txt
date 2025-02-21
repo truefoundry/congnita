@@ -63,3 +63,8 @@ pre-commit==3.7.0
 
 ### Web Crawling
 crawl4ai==0.3.73
+
+### PandasAI
+pandasai==2.4.0
+seaborn==0.13.2
+psycopg2==2.9.10

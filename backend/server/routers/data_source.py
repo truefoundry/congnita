@@ -71,7 +71,7 @@ async def delete_data_source(
     )
 
     # Upon successful deletion of the data source, delete the data from `/users_data` directory if data source is of type `localdir`
-    if deleted_data_source.type == DataSourceType.LOCAL:
+    if deleted_data_source.type in [DataSourceType.LOCAL, DataSourceType.STRUCTURED]:
         data_source_uri = deleted_data_source.uri
         # data_source_uri is of the form: `/app/users_data/folder_name`
         folder_name = data_source_uri.split("/")[-1]
@@ -87,7 +87,10 @@ async def delete_data_source(
             shutil.rmtree(folder_path)
             logger.info(f"Deleted folder: {folder_path}")
 
-    if deleted_data_source.type == DataSourceType.TRUEFOUNDRY:
+    if deleted_data_source.type in [
+        DataSourceType.TRUEFOUNDRY,
+        DataSourceType.STRUCTURED,
+    ]:
         # Delete the data directory from truefoundry data directory
         try:
             # Log into TrueFoundry

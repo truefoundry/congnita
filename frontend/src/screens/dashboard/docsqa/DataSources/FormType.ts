@@ -1,15 +1,20 @@
-export type FormInputData = {
+export interface FormInputData {
   dataSourceType: string
-  localdir: {
+  dataSourceUri?: string
+  localdir?: {
     name: string
-    files: {
-      id: string
-      file: File
-    }[]
-    uploadedFileIds: string[]
+    files: FileObject[]
   }
-  dataSourceUri: string
-  webConfig: {
+  webConfig?: {
     use_sitemap: boolean
   }
+  structured?: {
+    type: 'file' | 'database'
+    connectionString?: string
+  }
+}
+
+export type FileObject = {
+  id: string
+  file: File
 }

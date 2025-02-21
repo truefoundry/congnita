@@ -10,6 +10,7 @@ from truefoundry.ml import DataDirectory
 from truefoundry.ml import get_client as get_tfy_client
 from truefoundry.ml.autogen.client.models.signed_url_dto import SignedURLDto
 
+from backend.constants import DataSourceType
 from backend.logger import logger
 from backend.modules.model_gateway.model_gateway import model_gateway
 from backend.server.routers.data_source import add_data_source
@@ -26,14 +27,26 @@ async def upload_to_docker_directory(
         default_factory=lambda: str(uuid.uuid4()), regex=r"^[a-z][a-z0-9-]*$"
     ),
     files: List[UploadFile] = File(...),
+    is_structured: bool = Form(default=False),
 ):
-    """This function uploads files within `settings.LOCAL_DATA_DIRECTORY` given by the name req.upload_name"""
+    """This function uploads files within `settings.LOCAL_DATA_DIRECTORY`"""
     if not settings.LOCAL:
         return JSONResponse(
             content={"error": "API only supported for local docker environment"},
             status_code=500,
         )
     logger.info(f"Uploading files to directory: {upload_name}")
+
+    # Validate files if structured data
+    if is_structured:
+        if not files[0].filename.endswith((".csv", ".xlsx", ".xls")):
+            return JSONResponse(
+                content={
+                    "error": "Structured data upload only supports CSV and Excel files"
+                },
+                status_code=400,
+            )
+
     # create a folder within `/volumes/user_data/` that maps to `/app/user_data/` in the docker volume
     # this folder will be used to store the uploaded files
     folder_path = os.path.realpath(
@@ -68,10 +81,14 @@ async def upload_to_docker_directory(
         with open(file_path, "wb") as f:
             f.write(file.file.read())
 
-    # Add the data source to the metadata store.
+    # Add the data source to the metadata store with appropriate type
+    data_source_type = (
+        DataSourceType.STRUCTURED if is_structured else DataSourceType.LOCAL
+    )
+
     return await add_data_source(
         CreateDataSource(
-            type="localdir",
+            type=data_source_type,
             uri=folder_path,
         )
     )

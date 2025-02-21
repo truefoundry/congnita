@@ -47,12 +47,11 @@ def run_deploy(
         api_key_env_var: TFY_API_KEY
         llm_model_ids:
           - "openai-main/gpt-4o-mini"
+          - "openai-main/gpt-4o"
           - "openai-main/gpt-4-turbo"
-          - "openai-main/gpt-3-5-turbo"
-          - "azure-openai/gpt-4"
-          - "together-ai/llama-3-70b-chat-hf"
+          - "qwen-coder/qwen2-7b-coder"
         embedding_model_ids:
-          - "openai-main/text-embedding-ada-002"
+          - "openai-main/text-embedding-3-small"
         reranking_model_ids: []
         default_headers:
           "X-TFY-METADATA": '{{"tfy_log_request": "true", "Custom-Metadata": "Cognita-LLM-Request"}}'

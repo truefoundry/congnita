@@ -34,7 +34,7 @@ const DocsQASettings = () => {
     isLoading: isCollectionDetailsLoading,
     isFetching: isCollectionDetailsFetching,
   } = useGetCollectionDetailsQuery(selectedCollection ?? '', {
-    skip: !selectedCollection,
+    skip: !selectedCollection || selectedCollection === '',
   })
 
   const associatedDataSourcesRows = useMemo(() => {
@@ -97,8 +97,8 @@ const DocsQASettings = () => {
 
   return (
     <>
-      <div className='flex justify-between'>
-        <div className='text-[24px] font-bold font-inter'>Collections</div>
+      <div className="flex justify-between">
+        <div className="text-[24px] font-bold font-inter">Collections</div>
         <LinkButton
           icon="plus"
           iconClasses="fa-xs text-slate-400"

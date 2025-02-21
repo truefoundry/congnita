@@ -33,3 +33,8 @@ node_modules/
 sample-data/
 .github/
 docs/
+*.log
+cache/
+*.parquet
+*.db
+exports/

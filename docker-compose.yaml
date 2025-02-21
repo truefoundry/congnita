@@ -1,7 +1,6 @@
-version: "3.8"
 services:
   cognita-db:
-    image: postgres:13
+    image: postgres:13-alpine
     container_name: cognita-postgres
     restart: unless-stopped
     ports:
@@ -52,7 +51,7 @@ services:
       - cognita-docker
 
   infinity-server:
-    image: michaelf34/infinity:0.0.63
+    image: michaelf34/infinity:0.0.68
     pull_policy: if_not_present
     restart: unless-stopped
     container_name: infinity
@@ -77,10 +76,10 @@ services:
       - cognita-docker
 
   qdrant-server:
-    image: qdrant/qdrant:v1.8.4
+    image: qdrant/qdrant:v1.12.0
     pull_policy: if_not_present
     restart: unless-stopped
-    container_name: qdrant
+    container_name: cognita-qdrant
     ports:
       - 6333:6333
       - 6334:6334
@@ -134,6 +133,8 @@ services:
     image: fedirz/faster-whisper-server:latest-cpu
     pull_policy: if_not_present
     container_name: faster-whisper
+    profiles:
+      - whisper
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]

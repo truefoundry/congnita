@@ -30,3 +30,8 @@ user_data/
 pgdata/
 *.bak
 models_config.yaml
+*.log
+cache/
+*.db
+*.parquet
+exports/

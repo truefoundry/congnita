@@ -25,3 +25,8 @@ qdrant_db/
 qdrant_storage/
 sample-data/
 user_data/
+*.log
+cache/
+*.db
+*.parquet
+exports/

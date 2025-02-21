@@ -7,6 +7,7 @@ from langchain.embeddings.base import Embeddings
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_openai import OpenAIEmbeddings
 from langchain_openai.chat_models import ChatOpenAI
+from pandasai.llm.local_llm import LocalLLM
 
 from backend.logger import logger
 from backend.modules.model_gateway.audio_processing_svc import AudioProcessingSvc
@@ -41,6 +42,7 @@ class ModelGateway:
         """
         self._embedder_cache = create_cache()
         self._llm_cache = create_cache()
+        self._pandas_ai_cache = create_cache()
         self._reranker_cache = create_cache()
         self._audio_cache = create_cache()
 
@@ -269,6 +271,27 @@ class ModelGateway:
             )
 
         return self._llm_cache[cache_key]
+
+    def get_pandas_ai_model_from_model_config(self, model_config: ModelConfig):
+        """
+        Get a PandasAI model instance for the specified model configuration.
+        """
+        cache_key = model_config.name
+        if cache_key not in self._pandas_ai_cache:
+            if model_config.name not in self.model_name_to_provider_config:
+                raise ValueError(
+                    f"Model {model_config.name} not registered in the model gateway."
+                )
+
+            provider_config = self.model_name_to_provider_config[model_config.name]
+            api_key = self._get_api_key(provider_config)
+            model_id = "/".join(model_config.name.split("/")[1:])
+
+            self._pandas_ai_cache[cache_key] = LocalLLM(
+                api_base=provider_config.base_url, model=model_id, api_key=api_key
+            )
+
+        return self._pandas_ai_cache[cache_key]
 
     def get_reranker_from_model_config(self, model_name: str, top_k: int = 3):
         """

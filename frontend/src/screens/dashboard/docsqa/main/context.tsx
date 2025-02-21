@@ -64,6 +64,7 @@ export const DocsQAProvider: React.FC<DocsQAProviderProps> = ({ children }) => {
     if (!openapiSpecs?.paths) return []
     return Object.keys(openapiSpecs?.paths)
       .filter((path) => path.includes('/retrievers/'))
+      .filter((path) => !path.includes('/structured/'))
       .map((str) => {
         var parts = str.split('/')
         return parts[2]
