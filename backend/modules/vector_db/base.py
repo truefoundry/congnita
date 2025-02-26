@@ -12,7 +12,7 @@ from backend.types import DataPointVector
 
 class BaseVectorDB(ABC):
     @abstractmethod
-    def create_collection(self, collection_name: str, embeddings: Embeddings):
+    def create_collection(self, collection_name: str, embeddings: Embeddings = None):
         """
         Create a collection in the vector database
         """

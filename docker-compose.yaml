@@ -99,6 +99,27 @@ services:
     networks:
       - cognita-docker
 
+
+  chromadb-server:
+    image: chromadb/chroma:0.5.13
+    pull_policy: if_not_present
+    restart: unless-stopped
+    container_name: chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+    ports:
+      - ${CHROMADB_PORT}:8000
+    healthcheck:
+      test: ["CMD-SHELL", "/bin/bash -c ':> /dev/tcp/0.0.0.0/8000'"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    volumes:
+      - ./volumes/chromadb:/chroma/chroma
+    networks:
+      - cognita-docker
+
   unstructured-io-parsers:
     # Docs: http://localhost:9500/general/docs
     image: downloads.unstructured.io/unstructured-io/unstructured-api:0.0.73

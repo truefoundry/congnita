@@ -1,6 +1,7 @@
 from fastapi import Body
 from fastapi.responses import StreamingResponse
 from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnableParallel, RunnablePassthrough
 
 from backend.modules.query_controllers.base import BaseQueryController
@@ -35,7 +36,7 @@ class BasicRAGQueryController(BaseQueryController):
         vector_store = await self._get_vector_store(request.collection_name)
 
         # Create the QA prompt templates
-        QA_PROMPT = self._get_prompt_template(
+        QA_PROMPT = PromptTemplate(
             input_variables=["context", "question"],
             template=request.prompt_template,
         )

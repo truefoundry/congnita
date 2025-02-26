@@ -4,7 +4,6 @@ from typing import AsyncIterator
 import async_timeout
 import requests
 from fastapi import HTTPException
-from langchain.prompts import PromptTemplate
 from langchain.retrievers import ContextualCompressionRetriever, MultiQueryRetriever
 from langchain.schema.vectorstore import VectorStoreRetriever
 from langchain_core.language_models.chat_models import BaseChatModel
@@ -32,12 +31,6 @@ class BaseQueryController:
         "source",
         "relevance_score",
     ]
-
-    def _get_prompt_template(self, input_variables, template):
-        """
-        Get the prompt template
-        """
-        return PromptTemplate(input_variables=input_variables, template=template)
 
     def _format_docs(self, docs):
         return "\n\n".join([doc.page_content for doc in docs])

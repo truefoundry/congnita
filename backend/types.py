@@ -176,10 +176,28 @@ class VectorDBConfig(ConfiguredBaseModel):
     """
 
     provider: str
+    path: Optional[str] = None
     local: bool = False
     url: Optional[str] = None
     api_key: Optional[str] = None
-    config: Optional[Dict[str, Any]] = Field(default_factory=dict)
+    config: Dict[str, Any] = Field(default_factory=dict)
+
+
+class ChromaClientConfig(ConfiguredBaseModel):
+    """
+    Chroma client configuration
+    """
+
+    model_config = ConfigDict(extra="allow")
+
+
+class ChromaVectorDBConfig(VectorDBConfig):
+    """
+    Chroma-specific vector db configuration
+    """
+
+    path: Optional[str] = "./chroma_db"
+    config: ChromaClientConfig = Field(default_factory=ChromaClientConfig)
 
 
 class QdrantClientConfig(ConfiguredBaseModel):
@@ -194,6 +212,15 @@ class QdrantClientConfig(ConfiguredBaseModel):
     prefix: Optional[str] = None
     prefer_grpc: bool = False
     timeout: int = 300
+
+
+class QdrantVectorDBConfig(VectorDBConfig):
+    """
+    Qdrant-specific vector db configuration
+    """
+
+    path: Optional[str] = "./qdrant_db"
+    config: QdrantClientConfig = Field(default_factory=QdrantClientConfig)
 
 
 class MetadataStoreConfig(ConfiguredBaseModel):
